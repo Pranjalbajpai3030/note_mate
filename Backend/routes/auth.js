@@ -3,7 +3,7 @@ const User = require('../models/User');
 const router = express.Router(); 
 const { body, validationResult } = require('express-validator');
 
-router.post('/', [
+router.post('/createuser', [
     body('password').isLength({ min: 5 }),
     body('name').isLength({ min: 5 }),
     body('email').isEmail()
