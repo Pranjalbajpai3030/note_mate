@@ -2,6 +2,10 @@ const express = require('express');
 const User = require('../models/User');
 const router = express.Router(); 
 const { body, validationResult } = require('express-validator');
+var jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+const JWT_SECRET = 'your_jwt_secret_key'; // Define your JWT secret key
 
 router.post('/createuser', [
     body('password').isLength({ min: 5 }),
@@ -23,11 +27,30 @@ router.post('/createuser', [
             return res.status(400).json({ error: 'Email is already in use' });
         }
 
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+
         // Create and save the new user
-        const user = new User(req.body);
+        const user = new User({
+            name: req.body.name,
+            email: req.body.email,
+            password: hashedPassword
+        });
+        
+        // Save the user to the database
         await user.save();
 
-        res.status(201).json(user);
+        // Create JWT payload
+        const data = {
+            id: user.id
+        };
+
+        // Sign the JWT token
+        const token = jwt.sign(data, JWT_SECRET);
+        console.log(token);
+
+        // Respond with the user object and token
+        res.status(201).json({ user, token });
     } catch (error) {
         console.error(error);
         if (error.code === 11000) { // Duplicate key error
