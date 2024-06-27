@@ -1,12 +1,13 @@
 const express = require('express');
 const User = require('../models/User');
-const router = express.Router(); 
+const router = express.Router();
 const { body, validationResult } = require('express-validator');
 var jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const JWT_SECRET = 'your_jwt_secret_key'; // Define your JWT secret key
 
+// Route for creating a user
 router.post('/createuser', [
     body('password').isLength({ min: 5 }),
     body('name').isLength({ min: 5 }),
@@ -36,7 +37,7 @@ router.post('/createuser', [
             email: req.body.email,
             password: hashedPassword
         });
-        
+
         // Save the user to the database
         await user.save();
 
@@ -58,6 +59,46 @@ router.post('/createuser', [
         } else {
             res.status(500).send("Server error");
         }
+    }
+});
+
+// Route for authenticating a user
+router.post('/login', [
+    body('password').exists(),
+    body('email').isEmail()
+], async (req, res) => {
+    // Check for validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    try {
+        // Find the user by email
+        const user = await User.findOne({ email: req.body.email });
+        if (!user) {
+            return res.status(400).json({ error: 'Invalid email or password' });
+        }
+
+        // Compare the provided password with the stored hash
+        const isMatch = await bcrypt.compare(req.body.password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ error: 'Invalid email or password' });
+        }
+
+        // Create JWT payload
+        const data = {
+            id: user.id
+        };
+
+        // Sign the JWT token
+        const token = jwt.sign(data, JWT_SECRET);
+
+        // Respond with the token
+        res.json({ token });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Server error");
     }
 });
 
