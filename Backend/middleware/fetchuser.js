@@ -1,6 +1,6 @@
- middleware/fetchuser.js
+// middleware/fetchuser.js
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = 'your_jwt_secret_key'; // Ensure this matches the secret key used in your routes
+const JWT_SECRET = 'your_jwt_secret_key'; 
 
 const fetchuser = (req, res, next) => {
     const token = req.header('auth-token');

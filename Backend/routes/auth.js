@@ -2,10 +2,25 @@ const express = require('express');
 const User = require('../models/User');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
-var jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const JWT_SECRET = 'your_jwt_secret_key'; // Define your JWT secret key
+
+// Middleware to fetch user from JWT token
+const fetchuser = (req, res, next) => {
+    const token = req.header('auth-token');
+    if (!token) {
+        return res.status(401).json({ error: 'Access denied, no token provided' });
+    }
+    try {
+        const data = jwt.verify(token, JWT_SECRET);
+        req.user = data;
+        next();
+    } catch (error) {
+        res.status(401).json({ error: 'Invalid token' });
+    }
+};
 
 // Route for creating a user
 router.post('/createuser', [
@@ -99,6 +114,18 @@ router.post('/login', [
     } catch (error) {
         console.error(error);
         res.status(500).send("Server error");
+    }
+});
+
+// Route for fetching user data
+router.post('/getuser', fetchuser, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const user = await User.findById(userId).select("-password");
+        res.send(user);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Internal Server Error");
     }
 });
 
