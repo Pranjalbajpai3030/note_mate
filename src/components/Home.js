@@ -1,10 +1,9 @@
-import React from 'react';
-
-function Home() {
+import Notes from './Notes';
+export const Home = () => {
     return (
         <div>
-            <h1>Home Page</h1>
-            <p>Welcome to the Home page.</p>
+        
+            <Notes/>
         </div>
     );
 }

@@ -1,0 +1,49 @@
+/* NavBar.css */
+.navbar {
+    background-color: rgba(16, 137, 211, 0.8); /* Semi-transparent background for glass effect */
+    box-shadow: 0 4px 8px rgba(16, 137, 211, 0.5); /* Bottom shadow */
+    backdrop-filter: blur(10px); /* Blur effect for glass theme */
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.navbar-brand, .nav-link {
+    color: white;
+    font-weight: bold;
+}
+
+.nav-item {
+    margin-right: 20px; /* Adjust the value as needed */
+}
+
+.nav-link.active {
+    color: rgb(255, 200, 0);
+    border-bottom: 2px solid white;
+}
+
+.nav-link:hover {
+    color: rgba(255, 255, 255, 0.893);
+    border-bottom: 2px solid white;
+}
+
+.btn-outline-light {
+    border-color: white;
+    color: white;
+}
+
+.btn-outline-light:hover {
+    background-color: white;
+    color: #668aff;
+}
+
+.navbar-collapse {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.navbar-nav {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}

@@ -1,25 +1,50 @@
-import React, { useState } from "react";
-import NoteContext from "./noteContext.js";
+// NoteState.js
+
+import { useState } from 'react';
+import NoteContext from './noteContext';
 
 const NoteState = (props) => {
-    // Initial state using useState hook
-    const [state, setState] = useState({
-        name: "Pranjal",
-        class: "10 C"
-    });
+    const notesInitial = [
+        {
+            "_id": "668073b8a8f2f105b5ad3fc5",
+            "user": "66807368a8f2f105b5ad3fbc",
+            "title": "morning meeting",
+            "description": "Wake up to reality",
+            "tag": "personal",
+            "date": "2024-06-29T20:51:04.473Z",
+            "__v": 0
+        }
+    ];
 
-    // Update function to update state
-    const update = () => {
-        setTimeout(() => {
-            setState({
-                name: "Anjal",
-                class: "10 D"
-            });
-        }, 1000); // Example setTimeout delay of 1000 ms (1 second)
+    const [notes, setNotes] = useState(notesInitial);
+
+    // Add a Note
+    const addNote = (title, description, tag) => {
+        const newNote = {
+            "_id": Date.now().toString(),
+            "user": "66807368a8f2f105b5ad3fbc",
+            "title": title,
+            "description": description,
+            "tag": tag,
+            "date": new Date().toISOString(),
+            "__v": 0
+        };
+        setNotes([...notes, newNote]);
+    };
+
+    // Delete a Note
+    const deleteNote = (id) => {
+        const updatedNotes = notes.filter(note => note._id !== id);
+        setNotes(updatedNotes);
+    };
+
+    // Edit a Note
+    const editNote = (id, updatedNote) => {
+        // Implement edit functionality if needed
     };
 
     return (
-        <NoteContext.Provider value={{ state, update }}>
+        <NoteContext.Provider value={{ notes, addNote, deleteNote, editNote }}>
             {props.children}
         </NoteContext.Provider>
     );
