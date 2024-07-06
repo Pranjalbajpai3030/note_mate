@@ -1,49 +1,63 @@
-/* NavBar.css */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: #f0faff;
+  margin-top: 70px; /* Space below the navbar */
+}
+
 .navbar {
-    background-color: rgba(16, 137, 211, 0.8); /* Semi-transparent background for glass effect */
-    box-shadow: 0 4px 8px rgba(16, 137, 211, 0.5); /* Bottom shadow */
-    backdrop-filter: blur(10px); /* Blur effect for glass theme */
-    border-radius: 5px;
-    padding: 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px 20px; /* Adjusted padding for smaller screens */
+  background: #4a98f7;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: padding 0.3s ease;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between; /* Aligns items to extremes */
 }
 
-.navbar-brand, .nav-link {
-    color: white;
-    font-weight: bold;
-}
-
-.nav-item {
-    margin-right: 20px; /* Adjust the value as needed */
-}
-
-.nav-link.active {
-    color: rgb(255, 200, 0);
-    border-bottom: 2px solid white;
-}
-
-.nav-link:hover {
-    color: rgba(255, 255, 255, 0.893);
-    border-bottom: 2px solid white;
-}
-
-.btn-outline-light {
-    border-color: white;
-    color: white;
-}
-
-.btn-outline-light:hover {
-    background-color: white;
-    color: #668aff;
-}
-
-.navbar-collapse {
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
+.navbar-brand {
+  font-size: 22px;
+  font-weight: 500;
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
 
 .navbar-nav {
-    display: flex;
-    align-items: center;
-    margin-left: auto;
+  display: flex;
+  align-items: center;
+  margin-left: auto; /* Pushes nav items to the right */
+}
+
+.nav-item {
+  margin-left: 20px;
+}
+
+.nav-link {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.2s linear;
+}
+
+.nav-link.active,
+.nav-link:hover {
+  color: #d4e8ff;
+}
+
+@media screen and (max-width: 768px) {
+  .navbar {
+    padding: 15px 20px;
+    flex-wrap: wrap; /* Allows items to wrap on smaller screens */
+  }
 }

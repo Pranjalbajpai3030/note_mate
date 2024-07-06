@@ -38,3 +38,130 @@
 .time {
     font-size: 0.875rem; /* Increased font size for date */
 }
+.bin-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 55px;
+    height: 55px;
+    border-radius: 15px;
+    background-color: rgb(255, 95, 95);
+    cursor: pointer;
+    border: 3px solid rgb(255, 201, 201);
+    transition-duration: 0.3s;
+  }
+  .bin-bottom {
+    width: 15px;
+  }
+  .bin-top {
+    width: 17px;
+    transform-origin: right;
+    transition-duration: 0.3s;
+  }
+  .bin-button:hover .bin-top {
+    transform: rotate(45deg);
+  }
+  .bin-button:hover {
+    background-color: rgb(255, 0, 0);
+  }
+  .bin-button:active {
+    transform: scale(0.9);
+  }
+  
+  .edit-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgb(20, 20, 20);
+    border: none;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.164);
+    cursor: pointer;
+    transition-duration: 0.3s;
+    overflow: hidden;
+    position: relative;
+    text-decoration: none !important;
+  }
+  
+  .edit-svgIcon {
+    width: 17px;
+    transition-duration: 0.3s;
+  }
+  
+  .edit-svgIcon path {
+    fill: white;
+  }
+  
+  .edit-button:hover {
+    width: 120px;
+    border-radius: 50px;
+    transition-duration: 0.3s;
+    background-color: rgb(255, 69, 69);
+    align-items: center;
+  }
+  
+  .edit-button:hover .edit-svgIcon {
+    width: 20px;
+    transition-duration: 0.3s;
+    transform: translateY(60%);
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+  
+  .edit-button::before {
+    display: none;
+    content: "Edit";
+    color: white;
+    transition-duration: 0.3s;
+    font-size: 2px;
+  }
+  
+  .edit-button:hover::before {
+    display: block;
+    padding-right: 10px;
+    font-size: 13px;
+    opacity: 1;
+    transform: translateY(0px);
+    transition-duration: 0.3s;
+  }
+  .icon-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0; /* Adjust the margin as needed */
+  }
+  
+  .icon-container button {
+    margin: 10px 0; /* Adjust the margin as needed for spacing between buttons */
+  }
+  /* General Font Style for Note Items */
+.roboto-mono-note {
+    font-family: 'Roboto Mono', monospace;
+  }
+  
+  /* Specific Styles */
+  
+  .note-description {
+    font-weight: 400; /* Regular */
+    color: #555; /* Adjust color as needed */
+  }
+  
+  .note-tag {
+    font-weight: 700; /* Bold */
+    color: #333; /* Adjust color as needed */
+    margin-top: 10px; /* Optional: Add some spacing */
+  }
+  
+  .note-tag strong {
+
+    font-weight: 700; 
+    color :rgb(0, 76, 255)/* Ensure the "Tag:" label is bold */
+  }
+  
