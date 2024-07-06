@@ -1,0 +1,40 @@
+.note-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Make the container span the full width */
+    padding: 1.5rem;
+    box-sizing: border-box;
+    margin-bottom: 1.5rem; /* Add some space between items */
+}
+
+.note-content {
+    flex: 1;
+    overflow: hidden;
+}
+
+.note-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 1.5rem; /* Increased font size for title */
+}
+
+.note-description {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3; /* Limits the text to 3 lines */
+    font-size: 1rem; /* Increased font size for description */
+}
+
+.note-tag {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.875rem; /* Increased font size for tag */
+}
+
+.time {
+    font-size: 0.875rem; /* Increased font size for date */
+}

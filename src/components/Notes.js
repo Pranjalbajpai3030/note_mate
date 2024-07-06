@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import noteContext from '../context/notes/noteContext';
 import NoteItem from './NoteItems';
 import AddNote from './AddNote';
+import './Notes.css';
 
 const Notes = () => {
     const context = useContext(noteContext);
@@ -13,6 +14,7 @@ const Notes = () => {
     }, []);
 
     const ref = useRef(null);
+    const refClose = useRef(null);
     const [note, setNote] = useState({ _id: "", etitle: "", edescription: "", etag: "" });
 
     const updateNote = (currentNote) => {
@@ -24,8 +26,12 @@ const Notes = () => {
         e.preventDefault();
         try {
             await editNote(note._id, note.etitle, note.edescription, note.etag);
+            refClose.current.click();
             getNotes(); // Refresh notes after update
             console.log("Note updated successfully:", note);
+            
+            // Reset note state to clear the form fields
+            setNote({ _id: "", etitle: "", edescription: "", etag: "" });
         } catch (error) {
             console.error("Error updating note:", error);
         }
@@ -65,7 +71,7 @@ const Notes = () => {
                             </form>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button ref={refClose} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             <button onClick={handleClick} type="button" className="btn btn-primary">Update Note</button>
                         </div>
                     </div>
@@ -73,7 +79,7 @@ const Notes = () => {
             </div>
 
             <div className="row my-3">
-                <h2>Your Notes</h2>
+                <h1 className="notes-heading">Your Notes</h1> {/* Changed to h1 and added class */}
                 {notes.map((note) => (
                     <NoteItem key={note._id} updateNote={updateNote} note={note} />
                 ))}
