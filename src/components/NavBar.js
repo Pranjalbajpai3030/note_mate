@@ -17,7 +17,7 @@ function NavBar() {
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul className="navbar-nav">
+                    <ul className="navbar-nav me-auto">
                         <li className="nav-item">
                             <Link className={`nav-link ${location.pathname === '/' ? 'active' : ''}`} aria-current="page" to="/">Home</Link>
                         </li>
@@ -25,7 +25,10 @@ function NavBar() {
                             <Link className={`nav-link ${location.pathname === '/about' ? 'active' : ''}`} to="/about">About</Link>
                         </li>
                     </ul>
-                    
+                    <div className="d-flex">
+                        <Link className="btn btn-primary mx-2" to="/login">Login</Link>
+                        <Link className="btn btn-primary mx-2" to="/signup">Signup</Link>
+                    </div>
                 </div>
             </div>
         </nav>

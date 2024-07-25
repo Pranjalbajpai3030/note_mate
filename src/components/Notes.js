@@ -15,7 +15,7 @@ const Notes = () => {
 
     const ref = useRef(null);
     const refClose = useRef(null);
-    const [note, setNote] = useState({ _id: "", etitle: "", edescription: "", etag: "" });
+    const [note, setNote] = useState({ _id: '', etitle: '', edescription: '', etag: '' });
 
     const updateNote = (currentNote) => {
         ref.current.click();
@@ -28,12 +28,12 @@ const Notes = () => {
             await editNote(note._id, note.etitle, note.edescription, note.etag);
             refClose.current.click();
             getNotes(); // Refresh notes after update
-            console.log("Note updated successfully:", note);
-            
+            console.log('Note updated successfully:', note);
+
             // Reset note state to clear the form fields
-            setNote({ _id: "", etitle: "", edescription: "", etag: "" });
+            setNote({ _id: '', etitle: '', edescription: '', etag: '' });
         } catch (error) {
-            console.error("Error updating note:", error);
+            console.error('Error updating note:', error);
         }
     };
 
@@ -58,11 +58,11 @@ const Notes = () => {
                             <form className="my-3">
                                 <div className="mb-3">
                                     <label htmlFor="etitle" className="form-label">Title</label>
-                                    <input type="text" className="form-control" id="etitle" name="etitle" value={note.etitle} onChange={onChange} />
+                                    <input type="text" className="form-control" id="etitle" name="etitle" value={note.etitle} onChange={onChange} minLength={5} required />
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="edescription" className="form-label">Description</label>
-                                    <input type="text" className="form-control" id="edescription" name="edescription" value={note.edescription} onChange={onChange} />
+                                    <input type="text" className="form-control" id="edescription" name="edescription" value={note.edescription} onChange={onChange} minLength={5} required />
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="etag" className="form-label">Tag</label>
@@ -72,14 +72,15 @@ const Notes = () => {
                         </div>
                         <div className="modal-footer">
                             <button ref={refClose} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button onClick={handleClick} type="button" className="btn btn-primary">Update Note</button>
+                            <button disabled={note.etitle.length < 5 || note.edescription.length < 5} onClick={handleClick} type="button" className="btn btn-primary">Update Note</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div className="row my-3">
+            <div className="container row my-3">
                 <h1 className="notes-heading">Your Notes</h1> {/* Changed to h1 and added class */}
+                <div className="container">{notes.length === 0 && 'No Notes To Show'}</div>
                 {notes.map((note) => (
                     <NoteItem key={note._id} updateNote={updateNote} note={note} />
                 ))}

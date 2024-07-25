@@ -5,7 +5,7 @@ const { body, validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-const JWT_SECRET = 'your_jwt_secret_key'; // Define your JWT secret key
+const JWT_SECRET = 'your_jwt_secret_key';
 
 // Middleware to fetch user from JWT token
 const fetchuser = (req, res, next) => {
@@ -24,93 +24,71 @@ const fetchuser = (req, res, next) => {
 
 // Route for creating a user
 router.post('/createuser', [
-    body('password').isLength({ min: 5 }),
-    body('name').isLength({ min: 5 }),
-    body('email').isEmail()
+    body('name', 'Name must be at least 5 characters long').isLength({ min: 5 }),
+    body('email', 'Enter a valid email').isEmail(),
+    body('password', 'Password must be at least 5 characters long').isLength({ min: 5 })
 ], async (req, res) => {
-    // Check for validation errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
 
     try {
-        console.log(req.body);
+        const { name, email, password } = req.body;
 
         // Check if a user with the same email already exists
-        const existingUser = await User.findOne({ email: req.body.email });
-        if (existingUser) {
+        let user = await User.findOne({ email });
+        if (user) {
             return res.status(400).json({ error: 'Email is already in use' });
         }
 
         // Hash the password
-        const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
 
         // Create and save the new user
-        const user = new User({
-            name: req.body.name,
-            email: req.body.email,
-            password: hashedPassword
-        });
-
-        // Save the user to the database
+        user = new User({ name, email, password: hashedPassword });
         await user.save();
 
         // Create JWT payload
-        const data = {
-            id: user.id
-        };
+        const data = { id: user.id };
 
         // Sign the JWT token
-        const token = jwt.sign(data, JWT_SECRET);
-        console.log(token);
+        const authToken = jwt.sign(data, JWT_SECRET);
 
-        // Respond with the user object and token
-        res.status(201).json({ user, token });
+        res.status(201).json({ success: true, authToken });
     } catch (error) {
         console.error(error);
-        if (error.code === 11000) { // Duplicate key error
-            res.status(400).json({ error: 'Email is already in use' });
-        } else {
-            res.status(500).send("Server error");
-        }
+        res.status(500).send("Server error");
     }
 });
 
 // Route for authenticating a user
 router.post('/login', [
-    body('password').exists(),
-    body('email').isEmail()
+    body('email', 'Enter a valid email').isEmail(),
+    body('password', 'Password cannot be blank').exists()
 ], async (req, res) => {
-    // Check for validation errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
 
+    const { email, password } = req.body;
+
     try {
-        // Find the user by email
-        const user = await User.findOne({ email: req.body.email });
+        const user = await User.findOne({ email });
         if (!user) {
-            return res.status(400).json({ error: 'Invalid email or password' });
+            return res.status(400).json({ success: false, error: 'Invalid credentials' });
         }
 
-        // Compare the provided password with the stored hash
-        const isMatch = await bcrypt.compare(req.body.password, user.password);
+        const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.status(400).json({ error: 'Invalid email or password' });
+            return res.status(400).json({ success: false, error: 'Invalid credentials' });
         }
 
-        // Create JWT payload
-        const data = {
-            id: user.id
-        };
+        const data = { id: user.id };
+        const authToken = jwt.sign(data, JWT_SECRET);
 
-        // Sign the JWT token
-        const token = jwt.sign(data, JWT_SECRET);
-
-        // Respond with the token
-        res.json({ token });
+        res.json({ success: true, authToken });
     } catch (error) {
         console.error(error);
         res.status(500).send("Server error");
