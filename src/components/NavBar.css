@@ -34,12 +34,27 @@ body {
   transition: color 0.3s ease;
 }
 
+
+.navbar-nav-wrapper {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .navbar-nav {
   display: flex;
   align-items: center;
-  margin-left: auto; /* Pushes nav items to the right */
 }
 
+.navbar-nav.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.navbar-nav.align-right {
+  margin-left: auto; /* Pushes nav items to the right */
+}
 .nav-item {
   margin-left: 20px;
 }

@@ -2,13 +2,13 @@ import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './NavBar.css';
 
-function NavBar() {
+function NavBar({ isAuthenticated, handleLogout }) {
     let location = useLocation();
-    
+
     useEffect(() => {
         console.log(location.pathname);
     }, [location]);
-     
+
     return (
         <nav className="navbar navbar-expand-lg">
             <div className="container-fluid">
@@ -17,17 +17,33 @@ function NavBar() {
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul className="navbar-nav me-auto">
-                        <li className="nav-item">
-                            <Link className={`nav-link ${location.pathname === '/' ? 'active' : ''}`} aria-current="page" to="/">Home</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className={`nav-link ${location.pathname === '/about' ? 'active' : ''}`} to="/about">About</Link>
-                        </li>
-                    </ul>
-                    <div className="d-flex">
-                        <Link className="btn btn-primary mx-2" to="/login">Login</Link>
-                        <Link className="btn btn-primary mx-2" to="/signup">Signup</Link>
+                    <div className="navbar-nav-wrapper">
+                        {isAuthenticated && (
+                            <ul className="navbar-nav mx-auto">
+                                <li className="nav-item">
+                                    <Link className={`nav-link ${location.pathname === '/' ? 'active' : ''}`} aria-current="page" to="/">Home</Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className={`nav-link ${location.pathname === '/about' ? 'active' : ''}`} to="/about">About</Link>
+                                </li>
+                            </ul>
+                        )}
+                        <ul className="navbar-nav align-right">
+                            {!isAuthenticated ? (
+                                <>
+                                    <li className="nav-item my-1">
+                                        <Link className="nav-link" to="/login">Login</Link>
+                                    </li>
+                                    <li className="nav-item my-1">
+                                        <Link className="nav-link" to="/signup">Signup</Link>
+                                    </li>
+                                </>
+                            ) : (
+                                <li className="nav-item my-1">
+                                    <button className="btn btn-outline-danger" onClick={handleLogout}>Logout</button>
+                                </li>
+                            )}
+                        </ul>
                     </div>
                 </div>
             </div>

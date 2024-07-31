@@ -1,10 +1,11 @@
+// Notes.js
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import noteContext from '../context/notes/noteContext';
 import NoteItem from './NoteItems';
 import AddNote from './AddNote';
 import './Notes.css';
 
-const Notes = () => {
+const Notes = (props) => {
     const context = useContext(noteContext);
     const { notes, getNotes, editNote } = context;
 
@@ -28,11 +29,11 @@ const Notes = () => {
             await editNote(note._id, note.etitle, note.edescription, note.etag);
             refClose.current.click();
             getNotes(); // Refresh notes after update
-            console.log('Note updated successfully:', note);
-
+            props.showAlert('Note updated successfully', 'success');
             // Reset note state to clear the form fields
             setNote({ _id: '', etitle: '', edescription: '', etag: '' });
         } catch (error) {
+            props.showAlert('Error updating note', 'danger');
             console.error('Error updating note:', error);
         }
     };
@@ -43,7 +44,7 @@ const Notes = () => {
 
     return (
         <div className="container">
-            <AddNote />
+            <AddNote showAlert={props.showAlert} />
             <button ref={ref} type="button" className="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Launch demo modal
             </button>
@@ -82,7 +83,7 @@ const Notes = () => {
                 <h1 className="notes-heading">Your Notes</h1> {/* Changed to h1 and added class */}
                 <div className="container">{notes.length === 0 && 'No Notes To Show'}</div>
                 {notes.map((note) => (
-                    <NoteItem key={note._id} updateNote={updateNote} note={note} />
+                    <NoteItem key={note._id} updateNote={updateNote} note={note} showAlert={props.showAlert} />
                 ))}
             </div>
         </div>
