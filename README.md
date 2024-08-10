@@ -43,4 +43,5 @@ Home Page (/home): View and manage your notes.
 About Page (/about): Learn more about the application
 
 ## Preview
+[RecordedVideo.webm](https://github.com/user-attachments/assets/e0d88b9e-898b-49eb-b66a-2cfe61c47f0a)
 
